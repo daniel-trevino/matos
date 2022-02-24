@@ -6,40 +6,76 @@ import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
+import '@openzeppelin/contracts/utils/Counters.sol';
+import {MerkleProof} from '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
-contract Matos is ERC1155Supply, Ownable {
-  bool public saleIsActive = false;
-  uint256 constant TOKEN_ID = 1;
+contract Matos is ERC1155, ERC1155Supply, Ownable {
+  using Counters for Counters.Counter;
+
+  Counters.Counter private _tokenIds;
+
   uint256 constant NUM_RESERVED_TOKENS = 20;
-  uint256 constant MAX_TOKENS_PER_PURCHASE = 2;
   uint256 constant MAX_TOKENS = 100;
   uint256 constant TOKEN_PRICE = 0.005 ether;
 
-  constructor(string memory uri) ERC1155(uri) {}
+  bytes32 public immutable merkleRoot;
 
-  function reserve() public onlyOwner {
-    _mint(msg.sender, TOKEN_ID, NUM_RESERVED_TOKENS, '');
+  constructor(bytes32 _merkleRoot) ERC1155('') {
+    merkleRoot = _merkleRoot;
+    uint256[] memory ids = new uint256[](NUM_RESERVED_TOKENS);
+    uint256[] memory amounts = new uint256[](NUM_RESERVED_TOKENS);
+
+    for (uint256 i = 0; i < NUM_RESERVED_TOKENS; i++) {
+      ids[i] = i;
+      amounts[i] = i;
+      _tokenIds.increment();
+    }
+
+    _mintBatch(msg.sender, ids, amounts, '');
   }
 
-  function setSaleState(bool newState) public onlyOwner {
-    saleIsActive = newState;
+  function setURI(string memory newuri) public onlyOwner {
+    _setURI(newuri);
   }
 
-  function mint(uint256 numberOfTokens) public payable {
-    require(saleIsActive, 'Sale must be active to mint Tokens');
-    require(numberOfTokens <= MAX_TOKENS_PER_PURCHASE, 'Exceeded max token purchase');
-    require(
-      totalSupply(TOKEN_ID) + numberOfTokens <= MAX_TOKENS,
-      'Purchase would exceed max supply of tokens'
-    );
-    require(TOKEN_PRICE * numberOfTokens <= msg.value, 'Ether value sent is not correct');
-    _mint(msg.sender, TOKEN_ID, numberOfTokens, '');
+  function totalSupply() external view virtual returns (uint256) {
+    return _tokenIds.current();
+  }
+
+  function mint() public payable {
+    uint256 tokenId = _tokenIds.current();
+    require(tokenId + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
+    require(TOKEN_PRICE == msg.value, 'Ether value sent is not correct');
+    _mint(msg.sender, tokenId, 1, '');
+    _tokenIds.increment();
+  }
+
+  function onSaleMint(bytes32[] calldata proof) external payable {
+    bytes32 leaf = keccak256(abi.encodePacked(msg.sender, msg.value));
+    bool isValidLeaf = MerkleProof.verify(proof, merkleRoot, leaf);
+    require(isValidLeaf, 'this tokenId is reserved for another user');
+    uint256 tokenId = _tokenIds.current();
+    require(tokenId + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
+
+    _mint(msg.sender, tokenId, 1, '');
+    _tokenIds.increment();
   }
 
   function withdraw() public onlyOwner {
     uint256 balance = address(this).balance;
     payable(msg.sender).transfer(balance);
+  }
+
+  function _beforeTokenTransfer(
+    address operator,
+    address from,
+    address to,
+    uint256[] memory ids,
+    uint256[] memory amounts,
+    bytes memory data
+  ) internal override(ERC1155, ERC1155Supply) {
+    super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
   }
 }

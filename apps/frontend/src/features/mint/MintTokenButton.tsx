@@ -9,7 +9,7 @@ export const useIsMounted = (): boolean => {
   return mounted
 }
 
-const ConnectWalletButton: React.FC = () => {
+const MintTokenButton: React.FC = () => {
   const isMounted = useIsMounted()
   const [{ data, error }, connect] = useConnect()
   const [account, disconnect] = useAccount({
@@ -28,7 +28,7 @@ const ConnectWalletButton: React.FC = () => {
 
   const text = account.data
     ? account.data?.ens?.name || getShortAccount(account.data?.address)
-    : 'Connect Wallet'
+    : 'Connect Wallet to Mint'
 
   return (
     <>
@@ -44,4 +44,4 @@ const ConnectWalletButton: React.FC = () => {
   )
 }
 
-export default ConnectWalletButton
+export default MintTokenButton

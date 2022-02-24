@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   <button
     type="button"
     className={cn(
-      'flex justify-center items-center py-3 px-8 text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md border border-transparent md:py-4 md:px-10 md:text-lg',
+      'flex justify-center items-center py-3 px-8 text-base font-medium text-fontColor-primary bg-secondary rounded-md border border-transparent md:py-4 md:px-10 md:text-lg',
       {
         'w-full': block,
         'opacity-50 cursor-not-allowed': disabled,
