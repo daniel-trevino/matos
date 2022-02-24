@@ -5,7 +5,7 @@ import Layout from './Layout'
 const AppBootstrap: React.FC = ({ children }) => (
   <Layout>
     <Provider
-      autoConnect
+      // autoConnect
       provider={defaultProvider}
       connectors={[METAMASK_CONNECTOR]}
       connectorStorageKey="dyorWallet"

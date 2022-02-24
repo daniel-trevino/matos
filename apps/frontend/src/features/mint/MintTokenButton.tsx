@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
 import { useAccount, useConnect } from 'wagmi'
-import { getShortAccount } from '../../utils/account-utils'
 
 export const useIsMounted = (): boolean => {
   const [mounted, setMounted] = useState(false)
@@ -26,9 +25,7 @@ const MintTokenButton: React.FC = () => {
     }
   }
 
-  const text = account.data
-    ? account.data?.ens?.name || getShortAccount(account.data?.address)
-    : 'Connect Wallet to Mint'
+  const text = account.data ? 'Mint OG NFT' : 'Connect Wallet to Mint'
 
   return (
     <>

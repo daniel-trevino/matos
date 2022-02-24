@@ -3,24 +3,16 @@ import cn from 'classnames'
 
 export type ButtonProps = {
   disabled?: boolean
-  block?: boolean
   onClick?: () => void
   loading?: boolean
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  disabled = false,
-  onClick,
-  block,
-  loading,
-  children,
-}) => (
+export const Button: React.FC<ButtonProps> = ({ disabled = false, onClick, loading, children }) => (
   <button
     type="button"
     className={cn(
-      'flex justify-center items-center py-3 px-8 text-base font-medium text-fontColor-primary bg-secondary rounded-md border border-transparent md:py-4 md:px-10 md:text-lg',
+      'flex justify-center items-center hover:opacity-90 text-base font-medium text-fontColor-primary bg-secondary w-60 h-60 rounded-full md:text-lg',
       {
-        'w-full': block,
         'opacity-50 cursor-not-allowed': disabled,
         'cursor-wait': loading,
       }
