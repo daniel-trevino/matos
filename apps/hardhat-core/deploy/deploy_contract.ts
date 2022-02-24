@@ -1,6 +1,8 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 import chalk from 'chalk'
+import keccak256 from 'keccak256'
+import { MerkleTree } from 'merkletreejs'
 
 const contractName = 'Matos'
 
@@ -19,10 +21,11 @@ const func: DeployFunction = async ({
 }: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
+  const merkleTree = new MerkleTree([], keccak256, { sortPairs: true })
 
   const deployResult = await deploy(contractName, {
     from: deployer,
-    args: [matosMetadataIPFS],
+    args: [matosMetadataIPFS, merkleTree.getRoot()],
   })
 
   deployments.log(

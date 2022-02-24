@@ -2,6 +2,8 @@ import * as dotenv from 'dotenv'
 import chalk from 'chalk'
 import fs from 'fs'
 
+import '@typechain/hardhat'
+
 import '@nomiclabs/hardhat-waffle'
 import '@tenderly/hardhat-tenderly'
 
@@ -15,7 +17,7 @@ import 'hardhat-abi-exporter'
 dotenv.config({ path: '../../.env' })
 
 // Network you want to deploy to:
-const defaultNetwork = process.env.NEXT_PUBLIC_DEFAULT_NETWORK_NAME ?? 'localhost'
+const defaultNetwork = process.env.NEXT_PUBLIC_DEFAULT_NETWORK_NAME ?? 'hardhat'
 
 const mainnetGwei = 21
 
@@ -43,6 +45,12 @@ export default {
   gasReporter: {
     currency: 'USD',
     coinmarketcap: process.env.COINMARKETCAP || null,
+  },
+
+  typechain: {
+    outDir: 'generated-types',
+    target: 'ethers-v5',
+    alwaysGenerateOverloads: true, // should overloads with full signatures like deposit(uint256) be generated always, even if there are no overloads?
   },
 
   // if you want to deploy to a testnet, mainnet, or xdai, you will need to configure an Infura key (or similar)

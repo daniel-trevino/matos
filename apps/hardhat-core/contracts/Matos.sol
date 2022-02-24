@@ -17,12 +17,12 @@ contract Matos is ERC1155, ERC1155Supply, Ownable {
   Counters.Counter private _tokenIds;
 
   uint256 constant NUM_RESERVED_TOKENS = 20;
-  uint256 constant MAX_TOKENS = 100;
   uint256 constant TOKEN_PRICE = 0.005 ether;
+  uint256 public constant MAX_TOKENS = 100;
 
   bytes32 public immutable merkleRoot;
 
-  constructor(bytes32 _merkleRoot) ERC1155('') {
+  constructor(string memory uri, bytes32 _merkleRoot) ERC1155(uri) {
     merkleRoot = _merkleRoot;
     uint256[] memory ids = new uint256[](NUM_RESERVED_TOKENS);
     uint256[] memory amounts = new uint256[](NUM_RESERVED_TOKENS);
