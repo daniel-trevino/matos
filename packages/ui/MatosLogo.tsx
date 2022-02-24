@@ -1,11 +1,11 @@
-type Props = {
+export type MatosLogoProps = {
   width?: number
   height?: number
   color?: string
   className?: string
 }
 
-export const MatosLogo: React.FC<Props> = ({
+export const MatosLogo: React.FC<MatosLogoProps> = ({
   className,
   width = 882,
   height = 284,

@@ -1,4 +1,2 @@
-import { Button } from './Button'
-import { MatosLogo } from './MatosLogo'
-
-export { Button, MatosLogo }
+export * from './Button'
+export * from './MatosLogo'
