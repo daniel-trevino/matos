@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { MatosLogo } from 'ui'
 import MintTokenButton from '../features/mint/MintTokenButton'
 
 const Home: React.FC = () => (
@@ -8,7 +9,10 @@ const Home: React.FC = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <MintTokenButton />
+    <div className="flex flex-col items-center">
+      <MatosLogo className="mb-20" width={385} height={124} />
+      <MintTokenButton />
+    </div>
   </>
 )
 
