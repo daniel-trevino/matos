@@ -47,3 +47,4 @@ apps/hardhat-core/cache*
 apps/hardhat-core/cache
 cache
 artifacts
+.deps

@@ -2,13 +2,16 @@ import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 import chalk from 'chalk'
 
-const contractName = 'TestContract'
+const contractName = 'Matos'
 
 const defaultNetwork =
   process.env.NEXT_PUBLIC_DEFAULT_NETWORK_NAME === 'localhost'
     ? 'hardhat'
     : process.env.NEXT_PUBLIC_DEFAULT_NETWORK_NAME
 chalk.magenta(`Deploying to ${defaultNetwork} 🛰`)
+
+const matosMetadataIPFS =
+  'https://gateway.pinata.cloud/ipfs/QmQxo8Jogon3DaC59y1CjVWHns9QiQDbxr9fQPdo5VpbPY'
 
 const func: DeployFunction = async ({
   deployments,
@@ -19,6 +22,7 @@ const func: DeployFunction = async ({
 
   const deployResult = await deploy(contractName, {
     from: deployer,
+    args: [matosMetadataIPFS],
   })
 
   deployments.log(

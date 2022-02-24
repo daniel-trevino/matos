@@ -1,0 +1,21 @@
+{
+  "name": "Matos",
+  "created_by": "Matos DAO",
+  "description": "Only 100 editions of unique Matos NFT.",
+  "external_url": "https://matos.club",
+  "image": "https://gateway.pinata.cloud/ipfs/QmeyKd2aXiRubY7c437cvMvpfRrUc4VkMnQe1V2utzrsDn",
+  "attributes": [
+    {
+      "trait_type": "Artist",
+      "value": "Matos"
+    },
+    {
+      "trait_type": "Edition",
+      "value": "Genesis"
+    },
+    {
+      "trait_type": "Type",
+      "value": "OG"
+    }
+  ]
+}
