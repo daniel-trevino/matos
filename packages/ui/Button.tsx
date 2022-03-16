@@ -11,7 +11,7 @@ export const Button: React.FC<ButtonProps> = ({ disabled = false, onClick, loadi
   <button
     type="button"
     className={cn(
-      'flex justify-center items-center hover:opacity-90 text-base font-medium text-fontColor-primary bg-secondary w-60 h-60 rounded-full md:text-lg',
+      'flex justify-center px-8 py-4 rounded-md items-center hover:opacity-90 text-base font-medium text-fontColor-primary bg-secondary w-auto h-auto md:text-lg',
       {
         'opacity-50 cursor-not-allowed': disabled,
         'cursor-wait': loading,
