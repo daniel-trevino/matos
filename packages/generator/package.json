@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "dependencies": {
-    "axios": "^0.24.0",
-    "winston": "^3.3.3"
+    "axios": "0.24.0",
+    "winston": "3.3.3"
   },
   "scripts": {
     "start": "ts-node src/app.ts"
