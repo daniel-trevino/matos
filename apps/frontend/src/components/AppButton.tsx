@@ -30,7 +30,7 @@ const getText = ({
 }
 
 const AppButton: React.FC<Props> = ({
-  loading,
+  loading = false,
   needsAccount = false,
   onClick,
   children,

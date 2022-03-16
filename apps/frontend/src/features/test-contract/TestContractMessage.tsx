@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import AppButton from '../../components/AppButton'
 
 import { useTestContract } from './useTestContract'
@@ -7,7 +7,7 @@ const TestContractMessage: React.FC = () => {
   const [value, setValue] = useState<string>('')
   const { message, setMessage } = useTestContract()
 
-  const onChange = (e): void => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setValue(e.target.value)
   }
 

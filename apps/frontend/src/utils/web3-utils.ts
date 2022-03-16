@@ -1,7 +1,7 @@
 import { ethers, providers } from 'ethers'
 import { Chain, defaultChains, InjectedConnector } from 'wagmi'
 import config from '../lib/config'
-import { getNetworkByChainId, NETWORKS } from '../lib/constants'
+import { getNetworkByChainId, NETWORKS, SupportedNetworks } from '../lib/constants'
 
 // Chains for connectors to support
 const chains: Chain[] = [
@@ -51,11 +51,15 @@ export const createFallbackProvider = (chainId: number): ethers.providers.Fallba
   )
 }
 
-export const defaultProvider = ({
+export const defaultProvider: any = ({
   chainId,
+}: {
+  chainId: number | undefined
 }): ethers.providers.FallbackProvider | providers.InfuraProvider => {
   const normalizedChain =
-    chainId === undefined ? NETWORKS[config.DEFAULT_NETWORK_NAME].chainId : chainId
+    chainId === undefined
+      ? NETWORKS[config.DEFAULT_NETWORK_NAME as unknown as SupportedNetworks].chainId
+      : chainId
 
   return createFallbackProvider(normalizedChain)
 }

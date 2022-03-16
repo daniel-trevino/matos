@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "npm run generate-types && next build",
     "dev": "npm run generate-types && next dev --port 3000",
     "generate-types": "typechain --target=ethers-v5 'abi/*.json' --out-dir generated/typechain",
     "test": "jest --coverage",

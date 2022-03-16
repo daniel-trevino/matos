@@ -9,9 +9,9 @@
     ]
   },
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run export && turbo run build",
     "dev": "turbo run compile && turbo run dev --parallel",
-    "compile": "turbo run compile",
+    "export": "turbo run export",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky install",

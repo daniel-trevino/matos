@@ -10,15 +10,18 @@ type UseContractAddress = {
   error: Error | undefined
 }
 
+const proxyHardhatContracts: any = hardhatContracts
+
 const getLocalContractAddress = (name: SupportedContracts): string | undefined =>
-  hardhatContracts[31337][0].contracts[name]?.address
+  proxyHardhatContracts[31337][0].contracts[name]?.address
 
 export const useContractAddress = (name: SupportedContracts): UseContractAddress => {
-  const [{ data, error, loading }] = useNetwork()
+  const [{ data, error, loading = false }] = useNetwork()
 
-  const chainId = data?.chain?.id ?? NETWORKS[config.DEFAULT_NETWORK_NAME].chainId
+  const chainId =
+    data?.chain?.id ?? NETWORKS[config.DEFAULT_NETWORK_NAME as unknown as SupportedNetworks].chainId
   const isLocalhost = chainId === NETWORKS.localhost.chainId
-  const chainName = (data?.chain?.name.toLowerCase() ||
+  const chainName = ((data?.chain?.name && data?.chain?.name.toLowerCase()) ||
     config.DEFAULT_NETWORK_NAME) as SupportedNetworks
 
   let contractAddress

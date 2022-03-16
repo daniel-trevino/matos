@@ -24,7 +24,7 @@ export const useAppContractRead = (
 ): ReadResponse => {
   const { data } = useContractAddress(contractName)
   const contractConfig = {
-    addressOrName: data,
+    addressOrName: data ?? '',
     contractInterface: getLocalContractAbiFromName(contractName),
   }
 

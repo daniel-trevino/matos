@@ -7,6 +7,7 @@
     "accounts": "hardhat accounts",
     "balance": "hardhat balance",
     "dev": "ts-node scripts/start.ts && hardhat node --network hardhat --export-all ../frontend/generated/contracts/hardhat_contracts.json",
+    "export": "ts-node scripts/start.ts && hardhat export --export-all ../frontend/generated/contracts/hardhat_contracts.json",
     "compile": "hardhat compile --force",
     "deploy": "hardhat deploy --reset --export-all ../frontend/generated/contracts/hardhat_contracts.json",
     "generate": "hardhat generate",

@@ -17,7 +17,7 @@ const MintTokenButton: React.FC = () => {
 
   if (!isMounted) return null
 
-  const onClick = (connectorItem): void => {
+  const onClick = (connectorItem: any): void => {
     if (account.data) {
       disconnect()
     } else {
