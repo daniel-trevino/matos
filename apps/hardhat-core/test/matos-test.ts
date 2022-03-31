@@ -31,6 +31,7 @@ const generateLeaf = (address: string, price: BigNumber): Buffer =>
 
 describe('Matos', () => {
   beforeEach(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ;[owner, acc1, acc2, acc3, ...addrs] = await ethers.getSigners()
 
     const accounts = [
@@ -75,7 +76,7 @@ describe('Matos', () => {
     })
 
     it('should mint', async () => {
-      await MatosContract.mint({ value: ethers.utils.parseEther('0.005') })
+      await MatosContract.mint({ value: ethers.utils.parseEther('0.02') })
       const totalSupply = await MatosContract['totalSupply()']()
       expect(+totalSupply).to.eq(21)
     })

@@ -17,10 +17,13 @@ contract Matos is ERC1155, ERC1155Supply, Ownable {
   Counters.Counter private _tokenIds;
 
   uint256 constant NUM_RESERVED_TOKENS = 20;
-  uint256 constant TOKEN_PRICE = 0.005 ether;
+  uint256 constant TOKEN_PRICE = 0.02 ether;
+  uint256 constant SALE_TOKEN_PRICE = 0.005 ether;
   uint256 public constant MAX_TOKENS = 100;
 
   bytes32 public immutable merkleRoot;
+
+  mapping(address => bool) public whitelistClaimed;
 
   constructor(string memory uri, bytes32 _merkleRoot) ERC1155(uri) {
     merkleRoot = _merkleRoot;
@@ -47,20 +50,29 @@ contract Matos is ERC1155, ERC1155Supply, Ownable {
   function mint() public payable {
     uint256 tokenId = _tokenIds.current();
     require(tokenId + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
-    require(TOKEN_PRICE == msg.value, 'Ether value sent is not correct');
+    require(TOKEN_PRICE <= msg.value, 'Ether value sent is not correct');
     _mint(msg.sender, tokenId, 1, '');
     _tokenIds.increment();
   }
 
   function onSaleMint(bytes32[] calldata proof) external payable {
-    bytes32 leaf = keccak256(abi.encodePacked(msg.sender, msg.value));
+    // Make sure the address hasn't claimed the nft already
+    require(!whitelistClaimed[msg.sender], 'Address already claimed');
+
+    // Check for a valid proof
+    bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
     bool isValidLeaf = MerkleProof.verify(proof, merkleRoot, leaf);
-    require(isValidLeaf, 'this tokenId is reserved for another user');
+    require(isValidLeaf, 'Address is not elegible for mint with discount');
+
     uint256 tokenId = _tokenIds.current();
     require(tokenId + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
 
+    require(SALE_TOKEN_PRICE <= msg.value, 'Ether value sent is not correct');
     _mint(msg.sender, tokenId, 1, '');
     _tokenIds.increment();
+
+    // Mark the address as claimed
+    whitelistClaimed[msg.sender] = true;
   }
 
   function withdraw() public onlyOwner {

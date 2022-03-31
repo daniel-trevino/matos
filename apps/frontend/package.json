@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "ethers": "5.5.4",
+    "keccak256": "1.0.6",
+    "merkletreejs": "0.2.31",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-div-100vh": "0.7.0",

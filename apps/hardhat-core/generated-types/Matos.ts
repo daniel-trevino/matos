@@ -39,6 +39,7 @@ export interface MatosInterface extends utils.Interface {
     "totalSupply()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
+    "whitelistClaimed(address)": FunctionFragment;
     "withdraw()": FunctionFragment;
   };
 
@@ -102,6 +103,10 @@ export interface MatosInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(functionFragment: "uri", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "whitelistClaimed",
+    values: [string]
+  ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "MAX_TOKENS", data: BytesLike): Result;
@@ -149,6 +154,10 @@ export interface MatosInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "uri", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelistClaimed",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
@@ -415,6 +424,16 @@ export interface Matos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    whitelistClaimed(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    "whitelistClaimed(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     withdraw(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -597,6 +616,13 @@ export interface Matos extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  whitelistClaimed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+  "whitelistClaimed(address)"(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   withdraw(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -761,6 +787,13 @@ export interface Matos extends BaseContract {
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    whitelistClaimed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+    "whitelistClaimed(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     withdraw(overrides?: CallOverrides): Promise<void>;
 
@@ -999,6 +1032,16 @@ export interface Matos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    whitelistClaimed(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "whitelistClaimed(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     withdraw(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1185,6 +1228,16 @@ export interface Matos extends BaseContract {
 
     "uri(uint256)"(
       arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    whitelistClaimed(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "whitelistClaimed(address)"(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

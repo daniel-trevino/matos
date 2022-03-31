@@ -27,7 +27,7 @@ export const useAppContractWrite = (
     contractInterface: getLocalContractAbiFromName(contractName),
   }
 
-  const [response, setterFunction] = useContractWrite(contractConfig, functionName, config)
+  const [response, runFunction] = useContractWrite(contractConfig, functionName, config)
   const [{ error, loading }] = useWaitForTransaction({
     hash: response.data?.hash,
   })
@@ -36,6 +36,6 @@ export const useAppContractWrite = (
     data: response.data,
     error: response.error || error,
     loading: response.loading || loading,
-    run: setterFunction,
+    run: runFunction,
   }
 }

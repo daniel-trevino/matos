@@ -3,7 +3,6 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import chalk from 'chalk'
 import keccak256 from 'keccak256'
 import { MerkleTree } from 'merkletreejs'
-import { formatBytes32String } from 'ethers/lib/utils'
 
 const contractName = 'Matos'
 
@@ -16,14 +15,20 @@ chalk.magenta(`Deploying to ${defaultNetwork} 🛰`)
 const matosMetadataIPFS =
   'https://gateway.pinata.cloud/ipfs/QmQxo8Jogon3DaC59y1CjVWHns9QiQDbxr9fQPdo5VpbPY'
 
+const whitelistAddresses = [
+  '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
+  '0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc',
+]
+
 const func: DeployFunction = async ({
   deployments,
   getNamedAccounts,
 }: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
-  const merkleTree = new MerkleTree([], keccak256, { sortPairs: true })
-  const merkleRoot = formatBytes32String(merkleTree.getRoot().toString('hex'))
+  const leafNodes = whitelistAddresses.map((addr) => keccak256(addr))
+  const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true })
+  const merkleRoot = merkleTree.getHexRoot() // Gets the value as bytes32
 
   const deployResult = await deploy(contractName, {
     from: deployer,

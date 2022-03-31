@@ -5,7 +5,7 @@ type ContractAddresses = {
 }
 
 // Name should have the same as in the Solidity file contract
-export type LocalContractName = 'TestContract'
+export type LocalContractName = 'Matos'
 
 // Name should have the same as in the abi file added to /abi folder
 export type SupportedContractName = 'USDC' | 'WAGMIGOTCHI'
@@ -18,8 +18,8 @@ export type SupportedContractAddresses = {
   [key in SupportedContracts]: ContractAddresses
 }
 
-export const TEST_CONTRACT_ADDRESSES: ContractAddresses = {
-  goerli: '0x85D217c8370CD0faD2dF1885dBADfA51ba2dD09A',
+export const MATOS_CONTRACT_ADDRESSES: ContractAddresses = {
+  goerli: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 }
 
 export const WAGMIGOTCHI_ADDRESSES: ContractAddresses = {
@@ -35,7 +35,7 @@ export const USDC_ADDRESSES: ContractAddresses = {
 export const supportedContracts: SupportedContractAddresses = {
   USDC: USDC_ADDRESSES,
   WAGMIGOTCHI: WAGMIGOTCHI_ADDRESSES,
-  TestContract: TEST_CONTRACT_ADDRESSES,
+  Matos: MATOS_CONTRACT_ADDRESSES,
 }
 
 export const getContractAddress = (

@@ -7,6 +7,6 @@
     "winston": "3.3.3"
   },
   "scripts": {
-    "start": "ts-node src/app.ts"
+    "dev": "ts-node src/index.ts"
   }
 }
