@@ -1,6 +1,7 @@
 // 1. Import libraries. Use `npm` package manager to install
 import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
+import { generateWhitelist } from 'whitelist'
 
 // 2. Collect list of wallet addresses from competition, raffle, etc.
 // Store list of addresses in some data sheeet (Google Sheets or Excel)
