@@ -5,71 +5,44 @@ pragma solidity >=0.8.0 <0.9.0;
 import '@openzeppelin/contracts/token/ERC1155/ERC1155.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 import '@openzeppelin/contracts/utils/Counters.sol';
 import {MerkleProof} from '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
+import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 
 // GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
 
 contract Matos is ERC1155, ERC1155Supply, Ownable {
-  using Counters for Counters.Counter;
-
-  Counters.Counter private _tokenIds;
-
-  uint256 constant NUM_RESERVED_TOKENS = 20;
   uint256 constant TOKEN_PRICE = 0.02 ether;
-  uint256 constant SALE_TOKEN_PRICE = 0.005 ether;
   uint256 public constant MAX_TOKENS = 100;
 
   bytes32 public immutable merkleRoot;
 
   mapping(address => bool) public whitelistClaimed;
 
-  constructor(string memory uri, bytes32 _merkleRoot) ERC1155(uri) {
+  constructor(bytes32 _merkleRoot)
+    ERC1155('https://gateway.pinata.cloud/ipfs/QmQxo8Jogon3DaC59y1CjVWHns9QiQDbxr9fQPdo5VpbPY/{id}')
+  {
     merkleRoot = _merkleRoot;
-    uint256[] memory ids = new uint256[](NUM_RESERVED_TOKENS);
-    uint256[] memory amounts = new uint256[](NUM_RESERVED_TOKENS);
-
-    for (uint256 i = 0; i < NUM_RESERVED_TOKENS; i++) {
-      ids[i] = i;
-      amounts[i] = i;
-      _tokenIds.increment();
-    }
-
-    _mintBatch(msg.sender, ids, amounts, '');
   }
 
   function setURI(string memory newuri) public onlyOwner {
     _setURI(newuri);
   }
 
-  function totalSupply() external view virtual returns (uint256) {
-    return _tokenIds.current();
-  }
-
   function mint() public payable {
-    uint256 tokenId = _tokenIds.current();
-    require(tokenId + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
-    require(TOKEN_PRICE <= msg.value, 'Ether value sent is not correct');
-    _mint(msg.sender, tokenId, 1, '');
-    _tokenIds.increment();
+    require(totalSupply(0) + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
+    require(TOKEN_PRICE == msg.value, 'Ether value sent is not correct');
+    _mint(msg.sender, 0, 1, '');
   }
 
   function onSaleMint(bytes32[] calldata proof) external payable {
-    // Make sure the address hasn't claimed the nft already
+    require(totalSupply(0) + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
     require(!whitelistClaimed[msg.sender], 'Address already claimed');
-
-    // Check for a valid proof
-    bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+    bytes32 leaf = keccak256(abi.encodePacked(msg.sender, msg.value));
     bool isValidLeaf = MerkleProof.verify(proof, merkleRoot, leaf);
     require(isValidLeaf, 'Address is not elegible for mint with discount');
 
-    uint256 tokenId = _tokenIds.current();
-    require(tokenId + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
-
-    require(SALE_TOKEN_PRICE <= msg.value, 'Ether value sent is not correct');
-    _mint(msg.sender, tokenId, 1, '');
-    _tokenIds.increment();
+    _mint(msg.sender, 0, 1, '');
 
     // Mark the address as claimed
     whitelistClaimed[msg.sender] = true;

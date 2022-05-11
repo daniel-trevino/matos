@@ -36,7 +36,7 @@ export interface MatosInterface extends utils.Interface {
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setURI(string)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
-    "totalSupply()": FunctionFragment;
+    "totalSupply(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
     "whitelistClaimed(address)": FunctionFragment;
@@ -96,7 +96,7 @@ export interface MatosInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -400,7 +400,10 @@ export interface Matos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    totalSupply(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     "totalSupply(uint256)"(
       id: BigNumberish,
@@ -592,7 +595,7 @@ export interface Matos extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+  totalSupply(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
   "totalSupply(uint256)"(
     id: BigNumberish,
@@ -764,7 +767,10 @@ export interface Matos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    totalSupply(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     "totalSupply(uint256)"(
       id: BigNumberish,
@@ -1008,7 +1014,10 @@ export interface Matos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    totalSupply(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     "totalSupply(uint256)"(
       id: BigNumberish,
@@ -1204,7 +1213,10 @@ export interface Matos extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    totalSupply(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     "totalSupply(uint256)"(
       id: BigNumberish,

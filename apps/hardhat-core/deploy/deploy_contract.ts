@@ -26,13 +26,14 @@ const func: DeployFunction = async ({
 }: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
+
   const leafNodes = whitelistAddresses.map((addr) => keccak256(addr))
   const merkleTree = new MerkleTree(leafNodes, keccak256, { sortPairs: true })
   const merkleRoot = merkleTree.getHexRoot() // Gets the value as bytes32
 
   const deployResult = await deploy(contractName, {
     from: deployer,
-    args: [matosMetadataIPFS, merkleRoot],
+    args: ['0xe28fc9f580da7b3126bfa15520179e0e077eb70c79cc4f56e385506b2ec208b7'],
   })
 
   deployments.log(
