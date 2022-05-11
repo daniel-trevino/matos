@@ -17,6 +17,10 @@
     "prepare": "husky install",
     "test": "turbo run test"
   },
+  "nohoist": [
+    "**/typechain",
+    "**/@typechain/*"
+  ],
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.2",
     "@testing-library/react": "12.1.3",
