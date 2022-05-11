@@ -45,6 +45,8 @@ apps/hardhat-core/artifacts*
 apps/hardhat-core/deployments
 apps/hardhat-core/cache*
 apps/hardhat-core/cache
+apps/hardhat-core/generated-types/**
+apps/hardhat-core/generated-types/factories/**
 cache
 artifacts
 .deps
