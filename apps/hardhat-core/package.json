@@ -37,10 +37,10 @@
     "ts-node": "10.5.0",
     "keccak256": "1.0.6",
     "merkletreejs": "0.2.30",
+    "@typechain/ethers-v5": "9.0.0",
     "whitelist": "*"
   },
   "devDependencies": {
-    "@typechain/ethers-v5": "9.0.0",
     "@typechain/hardhat": "4.0.0",
     "@typechain/truffle-v5": "7.0.0",
     "@types/chai-as-promised": "7.1.5",
