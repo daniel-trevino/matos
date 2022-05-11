@@ -22,6 +22,7 @@ export const useAppContractWrite = (
   config?: Config
 ): WriteResponse => {
   const { data } = useContractAddress(contractName)
+
   const contractConfig = {
     addressOrName: data ?? '',
     contractInterface: getLocalContractAbiFromName(contractName),

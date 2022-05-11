@@ -4,7 +4,8 @@
   "main": "src/index.ts",
   "dependencies": {
     "axios": "0.24.0",
-    "winston": "3.3.3"
+    "winston": "3.3.3",
+    "whitelist": "*"
   },
   "scripts": {
     "dev": "ts-node src/index.ts"

@@ -3,22 +3,17 @@ import { ethers } from 'ethers'
 import keccak256 from 'keccak256'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
+import { generateWhitelist, generateLeaf } from 'whitelist'
 
-export function hashAddress(address: string): Buffer {
-  return Buffer.from(ethers.utils.solidityKeccak256(['address'], [address]).slice(2), 'hex')
-}
+const whitelistAddresses = generateWhitelist()
 
-const whitelistAddresses = [
-  '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
-  '0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc',
-]
+const expectedMerkleRoot = '0x361207418277ea248185ac60d4d2b62e0ae9fa688e1cfa3a32a43d0888ca8845'
 
-const expectedMerkleRoot = '343750465941b29921f50a28e0e43050e5e1c2611a3ea8d7fe1001090d5e1436'
-
-const leafNodes = whitelistAddresses.map((addr) => keccak256(addr))
+const leafNodes = whitelistAddresses.map((member) => generateLeaf(member.address, member.price))
 
 type UseMerkleTree = {
   signerHasValidProof: string[] | false | undefined
+  price?: ethers.BigNumber
 }
 
 export const useMerkleTree = (): UseMerkleTree => {
@@ -28,6 +23,10 @@ export const useMerkleTree = (): UseMerkleTree => {
     fetchEns: true,
   })
 
+  const match = whitelistAddresses.find(
+    (member) => member.address.toLowerCase() === account?.data?.address?.toLowerCase()
+  )
+
   useEffect(() => {
     // Returns proof array, or false if address ineligible
     const getProof = (address: string): string[] | false => {
@@ -36,7 +35,11 @@ export const useMerkleTree = (): UseMerkleTree => {
         return false
       }
 
-      const proof = merkleTree.getHexProof(hashAddress(address))
+      if (!match?.price) {
+        return false
+      }
+
+      const proof = merkleTree.getHexProof(generateLeaf(address, match.price))
       if (proof.length === 0) return false
       return proof
     }
@@ -44,7 +47,7 @@ export const useMerkleTree = (): UseMerkleTree => {
     if (account.data && !signerHasValidProof) {
       setSignerHasValidProof(getProof(account.data.address))
     }
-  }, [account.data, signerHasValidProof, merkleTree])
+  }, [account.data?.address, match?.price, signerHasValidProof, merkleTree])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -59,5 +62,5 @@ export const useMerkleTree = (): UseMerkleTree => {
     }
   }, [])
 
-  return { signerHasValidProof }
+  return { signerHasValidProof, price: match?.price }
 }

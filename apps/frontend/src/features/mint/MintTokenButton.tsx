@@ -14,7 +14,7 @@ export const useIsMounted = (): boolean => {
 const MintTokenButton: React.FC = () => {
   const isMounted = useIsMounted()
   const [{ data, error }, connect] = useConnect()
-  const { signerHasValidProof } = useMerkleTree()
+  const { signerHasValidProof, price } = useMerkleTree()
 
   const { onSaleMint, mint } = useMint()
 
@@ -24,17 +24,27 @@ const MintTokenButton: React.FC = () => {
 
   if (!isMounted) return null
 
+  console.log('PRICE:', price)
   const onClick = (connectorItem: any): void => {
     if (!account.data) {
       connect(connectorItem)
       return
     }
 
-    if (signerHasValidProof) {
+    if (signerHasValidProof && price) {
+      console.log(
+        '!!!',
+        {
+          signerHasValidProof,
+          price,
+        },
+        ethers.utils.formatEther(price)
+      )
+
       onSaleMint.run({
         args: [signerHasValidProof],
         overrides: {
-          value: ethers.utils.parseEther('0.005'),
+          value: price,
         },
       })
     } else {
@@ -47,7 +57,11 @@ const MintTokenButton: React.FC = () => {
     }
   }
 
-  const text = account.data ? 'Mint OG NFT' : 'Connect Wallet to Mint'
+  let text = account.data ? 'Mint OG NFT' : 'Connect Wallet to Mint'
+
+  if (signerHasValidProof && price) {
+    text = `Mint for ${ethers.utils.formatEther(price)}`
+  }
 
   return (
     <>
@@ -55,7 +69,13 @@ const MintTokenButton: React.FC = () => {
         ? null
         : signerHasValidProof && <h1>You are elegible for a discount!</h1>}
       {data.connectors.map((x) => (
-        <Button disabled={isMounted ? !x.ready : false} key={x.id} onClick={(): void => onClick(x)}>
+        <Button
+          disabled={isMounted ? !x.ready : false}
+          key={x.id}
+          onClick={(): void => {
+            onClick(x)
+          }}
+        >
           {text}
           {isMounted ? !x.ready && ' (unsupported)' : ''}
         </Button>

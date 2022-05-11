@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/lib.json",
+  "include": ["src/**/*", "src/matos-whitelist.json"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "outDir": "lib",
+    "resolveJsonModule": true
+  }
+}

@@ -37,15 +37,15 @@ describe('Matos', () => {
     const accounts = [
       {
         address: acc1.address,
-        price: ethers.utils.parseEther('0.1'),
+        price: ethers.utils.parseEther('0.01'),
       },
       {
         address: acc2.address,
-        price: ethers.utils.parseEther('0.1'),
+        price: ethers.utils.parseEther('0.01'),
       },
       {
         address: acc3.address,
-        price: ethers.utils.parseEther('0.1'),
+        price: ethers.utils.parseEther('0.01'),
       },
     ]
 
@@ -79,12 +79,63 @@ describe('Matos', () => {
       expect(+totalSupply).to.eq(1)
 
       await MatosContract.connect(acc1).mint({ value: ethers.utils.parseEther('0.02') })
+      totalSupply = await MatosContract.totalSupply(0)
+
       expect(+totalSupply).to.eq(2)
+
+      await MatosContract.connect(acc2).mint({ value: ethers.utils.parseEther('0.02') })
+      totalSupply = await MatosContract.totalSupply(0)
+
+      expect(+totalSupply).to.eq(3)
+
+      await MatosContract.connect(acc2).mint({ value: ethers.utils.parseEther('0.02') })
+      totalSupply = await MatosContract.totalSupply(0)
+
+      expect(+totalSupply).to.eq(4)
     })
 
     it('should whitelist mint', async () => {
-      // await MatosContract.mint({ value: ethers.utils.parseEther('0.02') })
-      // let totalSupply = await MatosContract.totalSupply(0)
+      const leaf = generateLeaf(acc1.address, ethers.utils.parseEther('0.01'))
+      const proof = merkleTree.getHexProof(leaf)
+
+      await MatosContract.connect(acc1).onSaleMint(proof, {
+        value: ethers.utils.parseEther('0.01'),
+      })
+      let totalSupply = await MatosContract.totalSupply(0)
+      expect(+totalSupply).to.eq(1)
+
+      let failure = false
+
+      try {
+        await MatosContract.connect(acc1).onSaleMint(proof, {
+          value: ethers.utils.parseEther('0.01'),
+        })
+      } catch (e) {
+        failure = true
+      }
+      expect(failure).to.eq(true)
+
+      totalSupply = await MatosContract.totalSupply(0)
+      expect(+totalSupply).to.eq(1)
+    })
+
+    it('should fail whitelist mint', async () => {
+      const leaf = generateLeaf(acc1.address, ethers.utils.parseEther('0.001'))
+      const proof = merkleTree.getHexProof(leaf)
+
+      let failure = false
+
+      try {
+        await MatosContract.connect(acc1).onSaleMint(proof, {
+          value: ethers.utils.parseEther('0.001'),
+        })
+      } catch (e) {
+        failure = true
+      }
+      expect(failure).to.eq(true)
+
+      const totalSupply = await MatosContract.totalSupply(0)
+      expect(+totalSupply).to.eq(0)
     })
   })
 })

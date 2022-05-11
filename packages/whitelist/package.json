@@ -1,0 +1,13 @@
+{
+  "name": "whitelist",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "files": ["src/index.ts"],
+  "scripts": {
+    "dev": "ts-node src/index.ts"
+  },
+  "devDependencies": {
+    "config": "*",
+    "tsconfig": "*"
+  }
+}

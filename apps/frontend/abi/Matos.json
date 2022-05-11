@@ -479,7 +479,7 @@
         "type": "address"
       }
     ],
-    "name": "whitelistClaimed",
+    "name": "userClaimed",
     "outputs": [
       {
         "internalType": "bool",
