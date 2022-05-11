@@ -1,0 +1,1 @@
+export const INITIAL_MINT_PRICE_ETH = 0.02
