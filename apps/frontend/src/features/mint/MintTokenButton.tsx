@@ -15,6 +15,7 @@ const MintTokenButton: React.FC = () => {
   const isMounted = useIsMounted()
   const [{ data, error }, connect] = useConnect()
   const { signerHasValidProof } = useMerkleTree()
+
   const { onSaleMint, mint } = useMint()
 
   const [account] = useAccount({

@@ -9,15 +9,13 @@ import '@openzeppelin/contracts/utils/Counters.sol';
 import {MerkleProof} from '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
 import '@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol';
 
-// GET LISTED ON OPENSEA: https://testnets.opensea.io/get-listed/step-two
-
 contract Matos is ERC1155, ERC1155Supply, Ownable {
   uint256 constant TOKEN_PRICE = 0.02 ether;
   uint256 public constant MAX_TOKENS = 100;
 
   bytes32 public immutable merkleRoot;
 
-  mapping(address => bool) public whitelistClaimed;
+  mapping(address => bool) public userClaimed;
 
   constructor(bytes32 _merkleRoot)
     ERC1155('https://gateway.pinata.cloud/ipfs/QmQxo8Jogon3DaC59y1CjVWHns9QiQDbxr9fQPdo5VpbPY/{id}')
@@ -37,15 +35,15 @@ contract Matos is ERC1155, ERC1155Supply, Ownable {
 
   function onSaleMint(bytes32[] calldata proof) external payable {
     require(totalSupply(0) + 1 <= MAX_TOKENS, 'Purchase would exceed max supply of tokens');
-    require(!whitelistClaimed[msg.sender], 'Address already claimed');
+    require(!userClaimed[msg.sender], 'Address already claimed');
+
     bytes32 leaf = keccak256(abi.encodePacked(msg.sender, msg.value));
     bool isValidLeaf = MerkleProof.verify(proof, merkleRoot, leaf);
     require(isValidLeaf, 'Address is not elegible for mint with discount');
 
     _mint(msg.sender, 0, 1, '');
 
-    // Mark the address as claimed
-    whitelistClaimed[msg.sender] = true;
+    userClaimed[msg.sender] = true;
   }
 
   function withdraw() public onlyOwner {

@@ -53,7 +53,7 @@ describe('Matos', () => {
     merkleTree = new MerkleTree(leafs, keccak256, { sortPairs: true })
 
     const MatosFactory = await ethers.getContractFactory('Matos')
-    MatosContract = (await MatosFactory.deploy('localhost:3000', merkleTree.getRoot())) as Matos
+    MatosContract = (await MatosFactory.deploy(merkleTree.getRoot())) as Matos
 
     // Reset block timestamp
     const blockNumber = ethers.provider.getBlockNumber()
@@ -70,15 +70,21 @@ describe('Matos', () => {
       expect(+MAX_SUPPLY).to.eq(100)
     })
 
-    it('should premint on init', async () => {
-      const totalSupply = await MatosContract['totalSupply()']()
-      expect(+totalSupply).to.eq(20)
-    })
-
     it('should mint', async () => {
       await MatosContract.mint({ value: ethers.utils.parseEther('0.02') })
-      const totalSupply = await MatosContract['totalSupply()']()
-      expect(+totalSupply).to.eq(21)
+      let totalSupply = await MatosContract.totalSupply(0)
+      expect(+totalSupply).to.eq(1)
+      // Only one per wallet
+      totalSupply = await MatosContract.totalSupply(0)
+      expect(+totalSupply).to.eq(1)
+
+      await MatosContract.connect(acc1).mint({ value: ethers.utils.parseEther('0.02') })
+      expect(+totalSupply).to.eq(2)
+    })
+
+    it('should whitelist mint', async () => {
+      // await MatosContract.mint({ value: ethers.utils.parseEther('0.02') })
+      // let totalSupply = await MatosContract.totalSupply(0)
     })
   })
 })

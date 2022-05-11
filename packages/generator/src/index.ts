@@ -3,6 +3,7 @@ import { MerkleTree } from 'merkletreejs'
 import keccak256 from 'keccak256'
 import { solidityKeccak256 } from 'ethers/lib/utils'
 import * as ethers from 'ethers'
+import { generateWhitelist } from './generateWhitelist'
 
 // 2. Collect list of wallet addresses from competition, raffle, etc.
 // Store list of addresses in some data sheeet (Google Sheets or Excel)
@@ -12,6 +13,8 @@ let whitelistAddresses = [
   '0xA4B7CEe8409673624EC9B075f5A4f9b8EbAdEd49',
 ]
 
+const a = generateWhitelist()
+console.log('---a', a)
 const generateLeaf = (address: string, value: string): Buffer =>
   Buffer.from(
     // Hash in appropriate Merkle format
