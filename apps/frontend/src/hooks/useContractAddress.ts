@@ -7,7 +7,7 @@ import config from '../lib/config'
 type UseContractAddress = {
   data: string | undefined
   loading: boolean
-  error: Error | undefined
+  error: Error | null
 }
 
 const proxyHardhatContracts: any = hardhatContracts
@@ -16,12 +16,12 @@ const getLocalContractAddress = (name: SupportedContracts): string | undefined =
   proxyHardhatContracts[31337][0].contracts[name]?.address
 
 export const useContractAddress = (name: SupportedContracts): UseContractAddress => {
-  const [{ data, error, loading = false }] = useNetwork()
+  const { data, error, isLoading = false } = useNetwork()
 
   const chainId =
-    data?.chain?.id ?? NETWORKS[config.DEFAULT_NETWORK_NAME as unknown as SupportedNetworks].chainId
+    data?.id ?? NETWORKS[config.DEFAULT_NETWORK_NAME as unknown as SupportedNetworks].chainId
   const isLocalhost = chainId === NETWORKS.localhost.chainId
-  const chainName = ((data?.chain?.name && data?.chain?.name.toLowerCase()) ||
+  const chainName = ((data?.name && data?.name.toLowerCase()) ||
     config.DEFAULT_NETWORK_NAME) as SupportedNetworks
 
   let contractAddress
@@ -30,10 +30,9 @@ export const useContractAddress = (name: SupportedContracts): UseContractAddress
       ? getLocalContractAddress(name)
       : getContractAddress(name, chainName)
   }
-
   return {
     data: contractAddress,
     error,
-    loading,
+    loading: isLoading,
   }
 }

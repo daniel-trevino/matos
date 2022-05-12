@@ -19,12 +19,10 @@ type UseMerkleTree = {
 export const useMerkleTree = (): UseMerkleTree => {
   const [signerHasValidProof, setSignerHasValidProof] = useState<string[] | false | undefined>()
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>()
-  const [account] = useAccount({
-    fetchEns: true,
-  })
+  const { data: account } = useAccount({})
 
   const match = whitelistAddresses.find(
-    (member) => member.address.toLowerCase() === account?.data?.address?.toLowerCase()
+    (member) => member.address.toLowerCase() === account?.address?.toLowerCase()
   )
 
   useEffect(() => {
@@ -44,10 +42,10 @@ export const useMerkleTree = (): UseMerkleTree => {
       return proof
     }
 
-    if (account.data && !signerHasValidProof) {
-      setSignerHasValidProof(getProof(account.data.address))
+    if (account?.address && !signerHasValidProof) {
+      setSignerHasValidProof(getProof(account.address))
     }
-  }, [account.data?.address, match?.price, signerHasValidProof, merkleTree])
+  }, [account?.address, match?.price, signerHasValidProof, merkleTree])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

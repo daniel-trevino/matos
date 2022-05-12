@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
-import { useAccount, useConnect } from 'wagmi'
+import { useAccount, useConnect, useNetwork } from 'wagmi'
 import { useMerkleTree } from '../../hooks/useMerkleTree'
 import { useMint } from './useMint'
 
@@ -13,24 +13,18 @@ export const useIsMounted = (): boolean => {
 
 const MintTokenButton: React.FC = () => {
   const isMounted = useIsMounted()
-  const [{ data, error }, connect] = useConnect()
+  const { data: account } = useAccount()
+  const { data } = useConnect()
   const { signerHasValidProof, price } = useMerkleTree()
 
   const { onSaleMint, mint } = useMint()
-
-  const [account] = useAccount({
-    fetchEns: true,
-  })
-
-  if (!isMounted) return null
-
-  console.log('PRICE:', price)
-  const onClick = (connectorItem: any): void => {
-    if (!account.data) {
-      connect(connectorItem)
-      return
-    }
-
+  if (!account?.address) {
+    return null
+  }
+  if (data?.chain.unsupported) {
+    return null
+  }
+  const onClick = (): void => {
     if (signerHasValidProof && price) {
       console.log(
         '!!!',
@@ -57,7 +51,7 @@ const MintTokenButton: React.FC = () => {
     }
   }
 
-  let text = account.data ? 'Mint OG NFT' : 'Connect Wallet to Mint'
+  let text = 'Mint OG NFT 0.02 ETH'
 
   if (signerHasValidProof && price) {
     text = `Mint for ${ethers.utils.formatEther(price)}`
@@ -68,20 +62,14 @@ const MintTokenButton: React.FC = () => {
       {signerHasValidProof === undefined
         ? null
         : signerHasValidProof && <h1>You are elegible for a discount!</h1>}
-      {data.connectors.map((x) => (
-        <Button
-          disabled={isMounted ? !x.ready : false}
-          key={x.id}
-          onClick={(): void => {
-            onClick(x)
-          }}
-        >
-          {text}
-          {isMounted ? !x.ready && ' (unsupported)' : ''}
-        </Button>
-      ))}
 
-      {error && <div>{error?.message ?? 'Failed to connect'}</div>}
+      <Button
+        onClick={(): void => {
+          onClick()
+        }}
+      >
+        {text}
+      </Button>
     </>
   )
 }
