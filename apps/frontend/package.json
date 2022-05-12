@@ -11,6 +11,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@splinetool/react-spline": "^2.2.1",
+    "@splinetool/runtime": "^0.9.50",
     "ethers": "5.5.4",
     "keccak256": "1.0.6",
     "merkletreejs": "0.2.31",

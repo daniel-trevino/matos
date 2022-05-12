@@ -4,7 +4,7 @@ import keccak256 from 'keccak256'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { generateWhitelist, generateLeaf } from 'whitelist'
-
+/* eslint-disable */
 const whitelistAddresses = generateWhitelist()
 
 const expectedMerkleRoot = '0x361207418277ea248185ac60d4d2b62e0ae9fa688e1cfa3a32a43d0888ca8845'

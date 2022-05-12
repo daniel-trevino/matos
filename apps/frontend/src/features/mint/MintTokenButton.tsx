@@ -24,7 +24,6 @@ const MintTokenButton: React.FC = () => {
 
   if (!isMounted) return null
 
-  console.log('PRICE:', price)
   const onClick = (connectorItem: any): void => {
     if (!account.data) {
       connect(connectorItem)
@@ -32,15 +31,6 @@ const MintTokenButton: React.FC = () => {
     }
 
     if (signerHasValidProof && price) {
-      console.log(
-        '!!!',
-        {
-          signerHasValidProof,
-          price,
-        },
-        ethers.utils.formatEther(price)
-      )
-
       onSaleMint.run({
         args: [signerHasValidProof],
         overrides: {
@@ -67,7 +57,7 @@ const MintTokenButton: React.FC = () => {
     <>
       {signerHasValidProof === undefined
         ? null
-        : signerHasValidProof && <h1>You are elegible for a discount!</h1>}
+        : signerHasValidProof && price && <h1>You are elegible for a discount!</h1>}
       {data.connectors.map((x) => (
         <Button
           disabled={isMounted ? !x.ready : false}
