@@ -13,7 +13,7 @@ type Props = {
 
 const defaultDescription =
   'MATOS is the CREATORS CLUB where CRYPTO NATIVES, DIGITAL INTUITIVES and FUTURE INNOVATORS go to hang out. Come build with us.'
-const defaultTitle = 'Matos.club'
+const defaultTitle = 'Matos Club'
 
 const SEO: FC<Props> = ({ description, meta = [], keywords = [], title, image }) => {
   const metaTitle = `${title || defaultTitle}`
