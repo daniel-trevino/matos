@@ -7,6 +7,7 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit'
 import { chain, createClient, WagmiProvider } from 'wagmi'
+import Layout from './Layout'
 
 const { chains, provider } = configureChains(
   [chain.rinkeby],
@@ -14,7 +15,7 @@ const { chains, provider } = configureChains(
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'My RainbowKit App',
+  appName: 'Matos',
   chains,
 })
 
@@ -23,8 +24,6 @@ const wagmiClient = createClient({
   connectors,
   provider,
 })
-
-import Layout from './Layout'
 
 const AppBootstrap: React.FC = ({ children }) => (
   <WagmiProvider client={wagmiClient}>
