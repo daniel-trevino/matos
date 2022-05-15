@@ -9,6 +9,7 @@ import {
 } from '@rainbow-me/rainbowkit'
 import { chain, createClient, WagmiProvider } from 'wagmi'
 import Layout from './Layout'
+import SEO from './SEO'
 
 const { chains, provider } = configureChains(
   [chain.rinkeby],
@@ -30,6 +31,7 @@ const AppBootstrap: React.FC = ({ children }) => (
   <WagmiProvider client={wagmiClient}>
     <RainbowKitProvider chains={chains}>
       <Layout>{children}</Layout>
+      <SEO />
     </RainbowKitProvider>
   </WagmiProvider>
 )
