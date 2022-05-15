@@ -1,6 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Head from 'next/head'
 import { MatosLogo } from 'ui'
+import Copy from '../components/Copy'
 import MintTokenButton from '../features/mint/MintTokenButton'
 
 const Home: React.FC = () => (
@@ -15,6 +16,7 @@ const Home: React.FC = () => (
     </div>
     <div className="flex flex-col items-center">
       <MatosLogo className="mb-20" width={385} height={124} />
+      <Copy />
       <MintTokenButton />
     </div>
   </>

@@ -12,29 +12,22 @@ export const useIsMounted = (): boolean => {
 }
 
 const MintTokenButton: React.FC = () => {
-  const isMounted = useIsMounted()
   const { data: account } = useAccount()
-  const { data } = useConnect()
+  const { activeChain } = useNetwork()
   const { signerHasValidProof, price } = useMerkleTree()
 
   const { onSaleMint, mint } = useMint()
   if (!account?.address) {
     return null
   }
-  if (data?.chain.unsupported) {
+  if (activeChain?.unsupported) {
     return null
   }
+
+  const loading = onSaleMint?.loading || mint.loading
+
   const onClick = (): void => {
     if (signerHasValidProof && price) {
-      console.log(
-        '!!!',
-        {
-          signerHasValidProof,
-          price,
-        },
-        ethers.utils.formatEther(price)
-      )
-
       onSaleMint.run({
         args: [signerHasValidProof],
         overrides: {
@@ -56,17 +49,17 @@ const MintTokenButton: React.FC = () => {
   if (signerHasValidProof && price) {
     text = `Mint for ${ethers.utils.formatEther(price)}`
   }
+  if (loading) {
+    text = 'minting...'
+  }
 
   return (
     <>
-      {signerHasValidProof === undefined
-        ? null
-        : signerHasValidProof && <h1>You are elegible for a discount!</h1>}
-
       <Button
         onClick={(): void => {
           onClick()
         }}
+        disabled={loading}
       >
         {text}
       </Button>

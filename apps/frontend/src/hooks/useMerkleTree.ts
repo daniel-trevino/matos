@@ -17,7 +17,6 @@ type UseMerkleTree = {
 }
 
 export const useMerkleTree = (): UseMerkleTree => {
-  const [signerHasValidProof, setSignerHasValidProof] = useState<string[] | false | undefined>()
   const [merkleTree, setMerkleTree] = useState<MerkleTree | undefined>()
   const { data: account } = useAccount({})
 
@@ -25,27 +24,27 @@ export const useMerkleTree = (): UseMerkleTree => {
     (member) => member.address.toLowerCase() === account?.address?.toLowerCase()
   )
 
-  useEffect(() => {
-    // Returns proof array, or false if address ineligible
-    const getProof = (address: string): string[] | false => {
-      if (merkleTree === undefined) {
-        console.error('getProof cannot be called before merkleTree initialized')
-        return false
-      }
+  // useEffect(() => {
+  //   // Returns proof array, or false if address ineligible
+  //   const getProof = (address: string): string[] | false => {
+  //     if (merkleTree === undefined) {
+  //       console.error('getProof cannot be called before merkleTree initialized')
+  //       return false
+  //     }
 
-      if (!match?.price) {
-        return false
-      }
+  //     if (!match?.price) {
+  //       return false
+  //     }
 
-      const proof = merkleTree.getHexProof(generateLeaf(address, match.price))
-      if (proof.length === 0) return false
-      return proof
-    }
+  //     const proof = merkleTree.getHexProof(generateLeaf(address, match.price))
+  //     if (proof.length === 0) return false
+  //     return proof
+  //   }
 
-    if (account?.address && !signerHasValidProof) {
-      setSignerHasValidProof(getProof(account.address))
-    }
-  }, [account?.address, match?.price, signerHasValidProof, merkleTree])
+  //   if (account?.address && !signerHasValidProof) {
+  //     setSignerHasValidProof(getProof(account.address))
+  //   }
+  // }, [account?.address, match?.price, signerHasValidProof, merkleTree])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -59,6 +58,27 @@ export const useMerkleTree = (): UseMerkleTree => {
       setMerkleTree(tree)
     }
   }, [])
+
+  let signerHasValidProof: string[] | false | undefined = false
+
+  const getProof = (address: string): string[] | false => {
+    if (merkleTree === undefined) {
+      console.error('getProof cannot be called before merkleTree initialized')
+      return false
+    }
+
+    if (!match?.price) {
+      return false
+    }
+
+    const proof = merkleTree.getHexProof(generateLeaf(address, match.price))
+    if (proof.length === 0) return false
+    return proof
+  }
+
+  if (account?.address) {
+    signerHasValidProof = getProof(account.address)
+  }
 
   return { signerHasValidProof, price: match?.price }
 }
