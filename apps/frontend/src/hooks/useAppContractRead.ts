@@ -1,16 +1,17 @@
 import { useContractRead } from 'wagmi'
 import { CallOverrides, ethers } from 'ethers'
-import { SupportedContracts } from '../lib/contracts'
 import { useContractAddress } from './useContractAddress'
+import { SupportedContracts } from '../lib/contracts'
 import { getLocalContractAbiFromName } from '../utils/local-contracts-utils'
 
 type ReadResponse = {
   data: ethers.utils.Result | undefined
-  error: Error | undefined
+  error: Error | null
   loading: boolean | undefined
 }
 
 type Config = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args?: any | any[]
   overrides?: CallOverrides
   skip?: boolean
@@ -22,19 +23,24 @@ export const useAppContractRead = (
   functionName: string,
   config?: Config
 ): ReadResponse => {
-  const { data } = useContractAddress(contractName)
+  const { data: contractData } = useContractAddress(contractName)
   const contractConfig = {
-    addressOrName: data ?? '',
+    addressOrName: contractData ?? '',
     contractInterface: getLocalContractAbiFromName(contractName),
   }
 
   try {
-    const [response] = useContractRead(contractConfig, functionName, {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { data, error, isLoading } = useContractRead(contractConfig, functionName, {
       watch: true,
       ...config,
     })
 
-    return response
+    return {
+      data,
+      error,
+      loading: isLoading,
+    }
   } catch (e) {
     return {
       data: undefined,
