@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
-import { useAccount, useConnect } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 import { useMerkleTree } from '../../hooks/useMerkleTree'
 import { useMint } from './useMint'
 
@@ -12,24 +12,21 @@ export const useIsMounted = (): boolean => {
 }
 
 const MintTokenButton: React.FC = () => {
-  const isMounted = useIsMounted()
-  const [{ data, error }, connect] = useConnect()
+  const { data: account } = useAccount()
+  const { activeChain } = useNetwork()
   const { signerHasValidProof, price } = useMerkleTree()
 
   const { onSaleMint, mint } = useMint()
+  if (!account?.address) {
+    return null
+  }
+  if (activeChain?.unsupported) {
+    return null
+  }
 
-  const [account] = useAccount({
-    fetchEns: true,
-  })
+  const loading = onSaleMint?.loading || mint.loading
 
-  if (!isMounted) return null
-
-  const onClick = (connectorItem: any): void => {
-    if (!account.data) {
-      connect(connectorItem)
-      return
-    }
-
+  const onClick = (): void => {
     if (signerHasValidProof && price) {
       onSaleMint.run({
         args: [signerHasValidProof],
@@ -47,32 +44,24 @@ const MintTokenButton: React.FC = () => {
     }
   }
 
-  let text = account.data ? 'Mint OG NFT' : 'Connect Wallet to Mint'
+  let text = 'Mint OG NFT 0.02 ETH'
 
   if (signerHasValidProof && price) {
     text = `Mint for ${ethers.utils.formatEther(price)}`
   }
+  if (loading) {
+    text = 'minting...'
+  }
 
   return (
-    <>
-      {signerHasValidProof === undefined
-        ? null
-        : signerHasValidProof && price && <h1>You are elegible for a discount!</h1>}
-      {data.connectors.map((x) => (
-        <Button
-          disabled={isMounted ? !x.ready : false}
-          key={x.id}
-          onClick={(): void => {
-            onClick(x)
-          }}
-        >
-          {text}
-          {isMounted ? !x.ready && ' (unsupported)' : ''}
-        </Button>
-      ))}
-
-      {error && <div>{error?.message ?? 'Failed to connect'}</div>}
-    </>
+    <Button
+      onClick={(): void => {
+        onClick()
+      }}
+      disabled={loading}
+    >
+      {text}
+    </Button>
   )
 }
 

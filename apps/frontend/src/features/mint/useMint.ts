@@ -4,14 +4,15 @@ import { useAppContractWrite } from '../../hooks/useAppContractWrite'
 
 type ReadResponse = {
   data: ethers.utils.Result | undefined
-  error: Error | undefined
+  error: Error | null
   loading: boolean | undefined
 }
 
 type WriteResponse = {
   data: ethers.providers.TransactionResponse | undefined
-  error: Error | undefined
+  error: Error | null
   loading: boolean | undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   run: any
 }
 

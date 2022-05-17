@@ -20,6 +20,7 @@ export type SupportedContractAddresses = {
 
 export const MATOS_CONTRACT_ADDRESSES: ContractAddresses = {
   goerli: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  rinkeby: '0x4AE033E495f0f9d57A8E2C8e627Fd97f6dF68D21',
 }
 
 export const WAGMIGOTCHI_ADDRESSES: ContractAddresses = {

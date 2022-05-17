@@ -66,6 +66,11 @@ export default {
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${process.env.NEXT_PUBLIC_RINKEBY_INFURA_KEY}`,
+      etherscan: {
+        apiKey: {
+          rinkeby: process.env.ETHERSCAN_API_KEY,
+        },
+      },
       //    url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXX/eth/rinkeby", // <---- YOUR MORALIS ID! (not limited to infura)
       accounts: {
         mnemonic: mnemonic(),
