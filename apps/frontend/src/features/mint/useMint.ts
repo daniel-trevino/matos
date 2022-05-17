@@ -25,16 +25,10 @@ type UseMint = {
 const contractName = 'Matos'
 
 export const useMint = (): UseMint => {
-  const merkleRoot = useAppContractRead(contractName, 'merkleRoot')
   const onSaleMint = useAppContractWrite(contractName, 'onSaleMint')
   const mint = useAppContractWrite(contractName, 'mint')
 
   return {
-    merkleRoot: {
-      data: merkleRoot.data,
-      error: merkleRoot.error,
-      loading: merkleRoot.loading && merkleRoot.data === undefined,
-    },
     onSaleMint,
     mint,
   }

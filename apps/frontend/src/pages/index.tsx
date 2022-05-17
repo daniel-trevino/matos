@@ -1,24 +1,27 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Head from 'next/head'
 import { MatosLogo } from 'ui'
-import Copy from '../components/Copy'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import MintTokenButton from '../features/mint/MintTokenButton'
 import Room from '../components/Room'
+import Copy from '../components/Copy'
 
 const Home: React.FC = () => (
   <>
     <Head>
       <link rel="icon" href="/favicon.ico" />
     </Head>
-
-    <div className="fixed right-5 top-5">
+    <div className="fixed top-5 right-5">
       <ConnectButton />
     </div>
-    <div className="flex flex-col items-center">
-      <Room />
-      <MatosLogo className="mb-20" width={385} height={124} />
-      <Copy />
-      <MintTokenButton />
+    <div className="flex mx-auto max-w-screen-xl h-full	">
+      <div className="flex flex-[2] items-center">
+        <Room />
+      </div>
+      <div className="flex flex-col flex-[1] justify-center items-center">
+        <MatosLogo className="mb-20" width={385} height={124} />
+        <Copy />
+        <MintTokenButton />
+      </div>
     </div>
   </>
 )

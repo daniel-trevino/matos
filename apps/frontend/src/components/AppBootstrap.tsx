@@ -13,7 +13,7 @@ import SEO from './SEO'
 
 const { chains, provider } = configureChains(
   [chain.rinkeby],
-  [apiProvider.alchemy(process.env.ALCHEMY_ID), apiProvider.fallback()]
+  [apiProvider.infura(process.env.NEXT_PUBLIC_RINKEBY_INFURA_KEY), apiProvider.fallback()]
 )
 
 const { connectors } = getDefaultWallets({
