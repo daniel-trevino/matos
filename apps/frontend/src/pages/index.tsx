@@ -13,12 +13,15 @@ const Home: React.FC = () => (
     <div className="fixed top-5 right-5 z-50">
       <ConnectButton />
     </div>
-    <div className="flex mx-auto max-w-screen-xl h-full	">
-      <div className="flex flex-[2] items-center">
+    <div
+      className="flex flex-col mx-auto max-w-screen-xl h-full 
+md:flex-row "
+    >
+      <div className="flex flex-[2] items-center max-h-72 md:max-h-screen">
         <Room />
       </div>
-      <div className="flex relative z-50 flex-col flex-[1] justify-center items-center p-4">
-        <MatosLogo className="mb-20" width={385} height={124} />
+      <div className="flex relative z-50 flex-col flex-[1.3] items-center p-4 md:justify-center">
+        <MatosLogo className="mb-5 max-w-full" width={385} height={124} />
         <Copy />
         <MintTokenButton />
       </div>

@@ -87,7 +87,7 @@ const Room: React.FC = () => {
   }, [])
 
   return (
-    <div className="aspect-square fixed  w-full canvas" id="canvas-parent">
+    <div className="aspect-square fixed w-full min-h-[800px] md:w-full canvas" id="canvas-parent">
       <canvas id="canvas-room" className="w-full h-full" />
     </div>
   )
