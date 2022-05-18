@@ -19,7 +19,7 @@ const SEO: FC<Props> = ({ description, meta = [], keywords = [], title, image })
   const metaTitle = `${title || defaultTitle}`
   const metaDescription = description || defaultDescription
 
-  let metaImage = 'https://matos.club/meta-image.png'
+  const metaImage = 'https://matos.club/meta-image.png'
 
   const metaContent = [
     {

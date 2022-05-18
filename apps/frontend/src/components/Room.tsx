@@ -1,9 +1,11 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { useEffect } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+// eslint-disable-next-line import/namespace, import/default, import/no-named-as-default, import/no-named-as-default-member
 import SplineLoader from './SplineLoader'
 
-export default function Scene({ ...props }) {
+const Room: React.FC = () => {
   useEffect(() => {
     const parent = document.getElementById('canvas-parent')
     // camera
@@ -21,15 +23,20 @@ export default function Scene({ ...props }) {
 
     // spline scene
     const loader = new SplineLoader()
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     loader.load('https://prod.spline.design/mkM7u0SUqZleK8cS/scene.splinecode', (splineScene) => {
       scene.add(splineScene)
     })
 
     // renderer
-    const canvas = document.getElementById('canvas')
+    const canvas = document.getElementById('canvas') as HTMLCanvasElement
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas })
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const { height, width } = parent?.getBoundingClientRect()
     renderer.setSize(width, height)
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     renderer.setAnimationLoop(animate)
 
     // scene settings
@@ -43,10 +50,12 @@ export default function Scene({ ...props }) {
     controls.enableDamping = true
     controls.dampingFactor = 0.125
 
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     window.addEventListener('resize', onWindowResize)
 
-    function onWindowResize() {
+    function onWindowResize(): void {
       const box = parent?.getBoundingClientRect()
+      if (!box) return
 
       camera.aspect = box.width / box.width
       camera.updateProjectionMatrix()
@@ -54,7 +63,7 @@ export default function Scene({ ...props }) {
     }
     onWindowResize()
 
-    function animate(time) {
+    function animate(): void {
       controls.update()
       renderer.render(scene, camera)
     }
@@ -65,16 +74,6 @@ export default function Scene({ ...props }) {
       <canvas id="canvas" className="w-full h-full" />
     </div>
   )
-  // const { nodes, materials } = useSpline('https://prod.spline.design/2fzdsSVagfszNxsd/scene.spline')
-
-  // return (
-  //   <group {...props} dispose={null}>
-  //     <mesh
-  //       name="Rectangle"
-  //       geometry={nodes.Rectangle.geometry}
-  //       material={materials['Rectangle Material']}
-  //     />
-  //   </group>
-  // )
-  return null
 }
+
+export default Room

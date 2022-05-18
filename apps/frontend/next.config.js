@@ -3,4 +3,7 @@ const withTM = require('next-transpile-modules')(['ui', 'whitelist'])
 
 module.exports = withTM({
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 })

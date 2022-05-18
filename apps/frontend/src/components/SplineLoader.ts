@@ -1,3 +1,4 @@
+// @ts-nocheck
 var Em = Object.create
 var jn = Object.defineProperty,
   _m = Object.defineProperties,
