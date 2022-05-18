@@ -137,5 +137,26 @@ describe('Matos', () => {
       const totalSupply = await MatosContract.totalSupply(0)
       expect(+totalSupply).to.eq(0)
     })
+
+    it('max mint', async () => {
+      const MAX_SUPPLY = 100
+      // eslint-disable-next-line
+      for (let i in Array(MAX_SUPPLY).fill(null)) {
+        // eslint-disable-next-line
+        await MatosContract.mint({ value: ethers.utils.parseEther('0.02') })
+      }
+      const totalSupply = await MatosContract.totalSupply(0)
+
+      expect(+totalSupply).to.eq(100)
+
+      let failure = false
+
+      try {
+        await MatosContract.mint({ value: ethers.utils.parseEther('0.02') })
+      } catch (e) {
+        failure = true
+      }
+      expect(failure).to.eq(true)
+    })
   })
 })
