@@ -12,7 +12,7 @@ type Props = {
 }
 
 const defaultDescription =
-  'MATOS is the CREATORS CLUB where CRYPTO NATIVES, DIGITAL INTUITIVES and FUTURE INNOVATORS go to hang out. Come build with us.'
+  'Matos is the creators club where crypto natives, digital intuitives and future innovators go to hang out. Come build with us.'
 const defaultTitle = 'Matos Club'
 
 const SEO: FC<Props> = ({ description, meta = [], keywords = [], title, image }) => {
@@ -83,6 +83,12 @@ const SEO: FC<Props> = ({ description, meta = [], keywords = [], title, image })
         <meta {...m} key={'name' in m ? m.name : m.property} />
       ))}
 
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500;700&display=swap"
+        rel="stylesheet"
+      />
       <meta charSet="utf-8" />
     </Head>
   )

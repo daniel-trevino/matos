@@ -1,6 +1,6 @@
 const Copy: React.FC = () => (
   <div className="container px-4 mx-auto mb-8 max-w-2xl text-3xl text-center	text-white	">
-    Matos is the <b>creators club</b> where <b>crypto natives</b>, <b>digital intuitives</b> and
+    Matos is the <b>creators club</b> where <b>crypto natives</b>, <b>digital intuitives</b> and{' '}
     <b>future innovators</b> go to hang out. Come build with us.
     <a
       href="https://discord.gg/x3WG9paB"
