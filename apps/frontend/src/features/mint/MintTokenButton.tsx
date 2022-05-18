@@ -1,7 +1,8 @@
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount, useContractRead, useNetwork } from 'wagmi'
+import { Matos__factory } from '../../../generated/typechain'
 import { useAppContractRead } from '../../hooks/useAppContractRead'
 import { useMerkleTree } from '../../hooks/useMerkleTree'
 import { useMint } from './useMint'
@@ -16,9 +17,7 @@ const MintTokenButton: React.FC = () => {
   const { data: account } = useAccount()
   const { activeChain } = useNetwork()
   const { signerHasValidProof, price } = useMerkleTree()
-  // const { a } = useAppContractRead('Matos', 'totalSupply', {
-  //   args: [0],
-  // })
+
   const { onSaleMint, mint } = useMint()
   if (!account?.address) {
     return null
@@ -53,7 +52,7 @@ const MintTokenButton: React.FC = () => {
     text = `Mint for ${ethers.utils.formatEther(price)}`
   }
   if (loading) {
-    text = 'minting...'
+    text = 'Minting...'
   }
 
   return (

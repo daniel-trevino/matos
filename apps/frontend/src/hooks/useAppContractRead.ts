@@ -24,11 +24,15 @@ export const useAppContractRead = (
   config?: Config
 ): ReadResponse => {
   const { data: contractData } = useContractAddress(contractName)
+
   const contractConfig = {
     addressOrName: contractData ?? '',
     contractInterface: getLocalContractAbiFromName(contractName),
   }
 
+  console.log({ contractConfig })
+
+  return {}
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { data, error, isLoading } = useContractRead(contractConfig, functionName, {
