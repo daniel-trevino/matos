@@ -15,7 +15,7 @@ contract Matos is ERC1155, ERC1155Supply, Ownable {
   mapping(address => bool) public userClaimed;
 
   constructor(bytes32 _merkleRoot)
-    ERC1155('https://gateway.pinata.cloud/ipfs/QmQxo8Jogon3DaC59y1CjVWHns9QiQDbxr9fQPdo5VpbPY/{id}')
+    ERC1155('https://gateway.pinata.cloud/ipfs/QmQxo8Jogon3DaC59y1CjVWHns9QiQDbxr9fQPdo5VpbPY')
   {
     merkleRoot = _merkleRoot;
   }
