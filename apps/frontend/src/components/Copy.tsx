@@ -3,7 +3,7 @@ const Copy: React.FC = () => (
     Matos is the <b>creators club</b> where <b>crypto natives</b>, <b>digital intuitives</b> and{' '}
     <b>future innovators</b> go to hang out. Come build with us.
     <a
-      href="https://discord.gg/x3WG9paB"
+      href="https://discord.gg/yx2W4hUsF7"
       className="flex justify-center mt-4 transition duration-300 hover:scale-125 "
       title="Discord"
       target="_blank"

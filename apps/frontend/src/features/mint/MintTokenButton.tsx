@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
 import { useAccount, useNetwork } from 'wagmi'
+import { useAppContractRead } from '../../hooks/useAppContractRead'
 import { useMerkleTree } from '../../hooks/useMerkleTree'
 import { useMint } from './useMint'
 
@@ -15,7 +16,9 @@ const MintTokenButton: React.FC = () => {
   const { data: account } = useAccount()
   const { activeChain } = useNetwork()
   const { signerHasValidProof, price } = useMerkleTree()
-
+  // const { a } = useAppContractRead('Matos', 'totalSupply', {
+  //   args: [0],
+  // })
   const { onSaleMint, mint } = useMint()
   if (!account?.address) {
     return null

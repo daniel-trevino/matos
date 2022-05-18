@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 // eslint-disable-next-line import/namespace, import/default, import/no-named-as-default, import/no-named-as-default-member
+import * as TWEEN from '@tweenjs/tween.js'
 import SplineLoader from './SplineLoader'
 
 const Room: React.FC = () => {
@@ -19,7 +20,7 @@ const Room: React.FC = () => {
       -100000,
       100000
     )
-    camera.position.set(-208.14, 571.08, 902.87)
+    camera.position.set(0, 0, 732.87)
     camera.quaternion.setFromEuler(new THREE.Euler(-0.51, -0.29, -0.16))
 
     // scene
@@ -29,6 +30,16 @@ const Room: React.FC = () => {
     const loader = new SplineLoader()
     loader.load('https://prod.spline.design/P9VqhJWeM7fA10Bb/scene.splinecode', (splineScene) => {
       scene.add(splineScene)
+
+      setTimeout(() => {
+        const coords = { x: camera.position.x, y: camera.position.y }
+        new TWEEN.Tween(coords)
+          .to({ x: -200, y: 200 }, 1000)
+          .onUpdate(() => {
+            camera.position.set(coords.x, coords.y, camera.position.z)
+          })
+          .start()
+      }, 2000)
     })
 
     // renderer
@@ -49,8 +60,13 @@ const Room: React.FC = () => {
     }
 
     function animate(time) {
+      TWEEN.update(time)
+
       controls.update()
       renderer.render(scene, camera)
+
+      // console.log(controls.target)
+      // console.log(camera.position)
     }
 
     renderer.setAnimationLoop(animate)
@@ -71,7 +87,7 @@ const Room: React.FC = () => {
   }, [])
 
   return (
-    <div className="aspect-square w-full" id="canvas-parent">
+    <div className="aspect-square fixed  w-full canvas" id="canvas-parent">
       <canvas id="canvas-room" className="w-full h-full" />
     </div>
   )
