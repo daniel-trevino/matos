@@ -34,12 +34,12 @@ const Room: React.FC = () => {
       setTimeout(() => {
         const coords = { x: camera.position.x, y: camera.position.y }
         new TWEEN.Tween(coords)
-          .to({ x: -200, y: 200 }, 1000)
+          .to({ x: -200, y: 200 }, 1900)
           .onUpdate(() => {
             camera.position.set(coords.x, coords.y, camera.position.z)
           })
           .start()
-      }, 2000)
+      }, 1500)
     })
 
     // renderer

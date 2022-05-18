@@ -78,17 +78,10 @@ const SEO: FC<Props> = ({ description, meta = [], keywords = [], title, image })
     <Head>
       <title key="title">{metaTitle}</title>
       <meta name="description" content={metaDescription} />
-      <link rel="icon" href="/favicon.png" />
       {metaContent.map((m) => (
         <meta {...m} key={'name' in m ? m.name : m.property} />
       ))}
 
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500;700&display=swap"
-        rel="stylesheet"
-      />
       <meta charSet="utf-8" />
     </Head>
   )

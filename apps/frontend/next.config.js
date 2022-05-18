@@ -6,4 +6,7 @@ module.exports = withTM({
   typescript: {
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 })
