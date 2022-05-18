@@ -10,10 +10,14 @@ import {
 import { chain, createClient, WagmiProvider } from 'wagmi'
 import Layout from './Layout'
 import SEO from './SEO'
+import config from '../lib/config'
+
+const selectedChain = config.isProduction ? chain.mainnet : chain.rinkeby
+const infuraKey = config.isProduction ? config.MAINNET_INFURA_KEY : config.RINKEBY_INFURA_KEY
 
 const { chains, provider } = configureChains(
-  [chain.rinkeby],
-  [apiProvider.infura(process.env.NEXT_PUBLIC_RINKEBY_INFURA_KEY), apiProvider.fallback()]
+  [selectedChain],
+  [apiProvider.infura(infuraKey), apiProvider.fallback()]
 )
 
 const { connectors } = getDefaultWallets({

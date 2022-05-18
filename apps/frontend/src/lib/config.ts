@@ -1,5 +1,5 @@
 const config = {
-  ENVIRONMENT: process.env.ENVIRONMENT ?? 'dev',
+  ENVIRONMENT: process.env.NEXT_PUBLIC_VERCEL_ENV ?? 'dev',
   ROUNDED_DECIMALS: 4,
   MAINNET_INFURA_KEY: process.env.NEXT_PUBLIC_MAINNET_INFURA_KEY ?? undefined,
   GOERLI_INFURA_KEY: process.env.NEXT_PUBLIC_GOERLI_INFURA_KEY ?? undefined,
