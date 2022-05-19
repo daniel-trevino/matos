@@ -18,6 +18,22 @@ const MintTokenButton: React.FC = () => {
   const { activeChain } = useNetwork()
   const { signerHasValidProof, price } = useMerkleTree()
 
+  const {
+    data: balanceOf,
+    error,
+    isLoading,
+  } = useContractRead(
+    {
+      addressOrName: '0x760C862191EBd06fe91ec76f7e8b7356308489e2',
+      contractInterface: Matos__factory.abi,
+    },
+    'balanceOf',
+    {
+      args: [account?.address, 0],
+      watch: true,
+    }
+  )
+
   const { onSaleMint, mint } = useMint()
   if (!account?.address) {
     return null
@@ -26,10 +42,14 @@ const MintTokenButton: React.FC = () => {
     return null
   }
 
+  if (isLoading) {
+    return null
+  }
+
   const loading = onSaleMint?.loading || mint.loading
 
   const onClick = (): void => {
-    if (signerHasValidProof && price) {
+    if (signerHasValidProof && price && balanceOf?.isZero()) {
       onSaleMint.run({
         args: [signerHasValidProof],
         overrides: {
@@ -47,8 +67,7 @@ const MintTokenButton: React.FC = () => {
   }
 
   let text = 'Mint OG NFT 0.02 ETH'
-
-  if (signerHasValidProof && price) {
+  if (signerHasValidProof && price && balanceOf?.isZero()) {
     text = `Mint for ${ethers.utils.formatEther(price)}`
   }
   if (loading) {
