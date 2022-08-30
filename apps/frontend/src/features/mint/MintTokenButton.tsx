@@ -1,11 +1,11 @@
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
-import { useAccount, useContractRead, useNetwork } from 'wagmi'
+import { useAccount, useContractRead, useNetwork, useWaitForTransaction } from 'wagmi'
+import { useMint } from './useMint'
 import { Matos__factory } from '../../../generated/typechain'
 import { useAppContractRead } from '../../hooks/useAppContractRead'
 import { useMerkleTree } from '../../hooks/useMerkleTree'
-import { useMint } from './useMint'
 
 export const useIsMounted = (): boolean => {
   const [mounted, setMounted] = useState(false)
@@ -35,6 +35,12 @@ const MintTokenButton: React.FC = () => {
   )
 
   const { onSaleMint, mint } = useMint()
+  const tx = useWaitForTransaction({
+    hash: onSaleMint?.data?.hash || mint?.data?.hash,
+  })
+
+  console.log(tx)
+
   if (!account?.address) {
     return null
   }
@@ -46,7 +52,7 @@ const MintTokenButton: React.FC = () => {
     return null
   }
 
-  const loading = onSaleMint?.loading || mint.loading
+  const loading = onSaleMint?.loading || mint.loading || tx?.isLoading
 
   const onClick = (): void => {
     if (signerHasValidProof && price && balanceOf?.isZero()) {
