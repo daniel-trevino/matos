@@ -2,10 +2,9 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { Button } from 'ui'
 import { useAccount, useContractRead, useNetwork } from 'wagmi'
-import { Matos__factory } from '../../../generated/typechain'
-import { useAppContractRead } from '../../hooks/useAppContractRead'
-import { useMerkleTree } from '../../hooks/useMerkleTree'
 import { useMint } from './useMint'
+import { Matos__factory } from '../../../generated/typechain'
+import { useMerkleTree } from '../../hooks/useMerkleTree'
 
 export const useIsMounted = (): boolean => {
   const [mounted, setMounted] = useState(false)
@@ -46,8 +45,6 @@ const MintTokenButton: React.FC = () => {
     return null
   }
 
-  const loading = onSaleMint?.loading || mint.loading
-
   const onClick = (): void => {
     if (signerHasValidProof && price && balanceOf?.isZero()) {
       onSaleMint.run({
@@ -66,20 +63,14 @@ const MintTokenButton: React.FC = () => {
     }
   }
 
-  let text = 'Mint OG NFT 0.02 ETH'
-  if (signerHasValidProof && price && balanceOf?.isZero()) {
-    text = `Mint for ${ethers.utils.formatEther(price)}`
-  }
-  if (loading) {
-    text = 'Minting...'
-  }
+  const text = 'Sold out!'
 
   return (
     <Button
       onClick={(): void => {
         onClick()
       }}
-      disabled={loading}
+      disabled
     >
       {text}
     </Button>
